@@ -1,14 +1,14 @@
-import keyboard
 import pyautogui as py
 import time
-import mouse
+from pynput import mouse
 import os
 
 script = os.path.dirname(os.path.abspath(__file__))
 image = os.path.join(script, "reservebutton.png")
 
 time.sleep(1)
-mouse.wait("left")
+with mouse.Listener() as listener:
+    pass
 print("non")
 x, y = py.position()
 loc = None
@@ -19,6 +19,7 @@ while loc is None:
     except:
         time.sleep(0.1)
         i+=1
-print (loc) 
+print(loc) 
 print(i)
 py.moveTo(loc)
+py.click()
