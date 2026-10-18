@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reserve Button Test</title>
+</head>
+<body>
+  <h1>Reserve Button Test</h1>
+  <p>Start the Python script, then click Reveal.</p>
+  <p>This is just a test. It does not book a real court.</p>
+
+  <button id="reveal" onclick="revealButton()">Reveal</button>
+
+  <button id="reserve" onclick="reserveCourt()" hidden>
+    <img id="buttonImage" src="../reservebutton.png" alt="Reserve">
+  </button>
+
+  <p id="status" role="status">The Reserve button is hidden.</p>
+  <button onclick="resetTest()">Reset</button>
+
+  <script>
+    const reveal = document.getElementById("reveal");
+    const reserve = document.getElementById("reserve");
+    const status = document.getElementById("status");
+    const buttonImage = document.getElementById("buttonImage");
+
+    // Timer exercise: enabled; comment out the four timer lines to disable it.
+    // 1. Store the time when Reveal is clicked.
+    let revealTime;
+
+    function sizeImage() {
+      buttonImage.width = 200 / window.devicePixelRatio;
+    }
+    sizeImage();
+    window.addEventListener("resize", sizeImage);
+
+    function revealButton() {
+      reveal.hidden = true;
+      reserve.hidden = false;
+      status.textContent = "Waiting for the Python script to click Reserve...";
+      // 2. Start the timer (performance.now() measures milliseconds).
+      revealTime = performance.now();
+    }
+
+    function reserveCourt() {
+      status.textContent = "Success! Reserve was clicked.";
+      // 3. Show the elapsed time in the website.
+      // This includes searching for the image, moving the mouse, and clicking.
+      let elapsed = performance.now() - revealTime;
+      status.textContent = "Clicked after " + elapsed.toFixed(0) + " ms";
+
+      fetch("/clicked").catch(function () {});
+    }
+
+    function resetTest() {
+      reveal.hidden = false;
+      reserve.hidden = true;
+      status.textContent = "The Reserve button is hidden.";
+    }
+  </script>
+</body>
+</html>
